@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,11 @@ namespace AppControleFinanceiro.Models
 {
     public class Transaction
     {
+        [BsonId]
         public required int Id { get; set; }
 
         public TransactionType  Type { get; set; }
-        public String Name { get; set; }
+        public required String Name { get; set; }
         public DateTimeOffset Date { get; set; }
         public Decimal Value { get; set; }
     }
