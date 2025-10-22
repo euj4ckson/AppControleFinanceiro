@@ -8,13 +8,12 @@ public partial class TransactionList : ContentPage
 	}
 	private void OnButtonClicked_to_TransactionAdd(object sender, EventArgs args)
 	{
-        if (App.Current != null)
-            App.Current.MainPage = new TransactionAdd();
+        Navigation.PushModalAsync(new TransactionAdd());
     }
 
     private void OnButtonClicked_to_TransactionEdit(object sender, EventArgs e)
     {
-        if (App.Current != null)
-            App.Current.MainPage = new TransactionEdit();
+        Navigation.PushModalAsync(new TransactionEdit());
+
     }
 }
