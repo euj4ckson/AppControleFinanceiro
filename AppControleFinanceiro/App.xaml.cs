@@ -7,7 +7,7 @@ namespace AppControleFinanceiro
         public App()
         {
             InitializeComponent();
-            MainPage = new TransactionList();
+            MainPage = new NavigationPage ( new TransactionList());
         }
 
     }
