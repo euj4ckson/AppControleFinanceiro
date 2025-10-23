@@ -1,4 +1,5 @@
 ﻿using AppControleFinanceiro.Repositories;
+using AppControleFinanceiro.Views;
 using LiteDB;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +17,8 @@ namespace AppControleFinanceiro
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 })
-                .RegisterDatabaseAndRepositories();
+                .RegisterDatabaseAndRepositories()
+                .regiserviews();
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -31,6 +33,13 @@ namespace AppControleFinanceiro
                 return new LiteDatabase(AppSettings.FullDatabasePath);
             });
             MauiAppBuilder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
+            return MauiAppBuilder;
+        }
+        public static MauiAppBuilder regiserviews(this MauiAppBuilder MauiAppBuilder)
+        {
+            MauiAppBuilder.Services.AddTransient<TransactionAdd>();
+            MauiAppBuilder.Services.AddTransient<TransactionEdit>();
+            MauiAppBuilder.Services.AddTransient<TransactionList>();
             return MauiAppBuilder;
         }
     }
