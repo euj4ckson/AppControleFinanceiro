@@ -1,14 +1,79 @@
+using AppControleFinanceiro.Models;
+using AppControleFinanceiro.Repositories;
+using CommunityToolkit.Mvvm.Messaging;
+using System.Text;
+
 namespace AppControleFinanceiro.Views;
 
 public partial class TransactionAdd : ContentPage
 {
-	public TransactionAdd()
+    private ITransactionRepository _repository;
+    public TransactionAdd(ITransactionRepository repository)
 	{
-		InitializeComponent();
+        _repository = repository;
+        InitializeComponent();
+		
 	}
 
     private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
     {
 		Navigation.PopModalAsync();
+    }
+
+    private void OnButtonClicked_Save(object sender, EventArgs e)
+    {
+
+        if (ValidateInputs() == false)
+        {
+            return;
+        }
+        SaveTransactionInDatabase();
+        Navigation.PopModalAsync();
+        WeakReferenceMessenger.Default.Send<string>("RecarregarTransactionList");
+        var count = _repository.GetAll().Count();
+        if (App.Current?.MainPage != null)
+        {
+             App.Current.MainPage.DisplayAlert("Mensagem", $"Existem {count} registros no BD!", "OK");
+        }
+    }
+
+    private void SaveTransactionInDatabase()
+    {
+        Models.Transaction transaction = new Transaction()
+        {
+            Name = EntryName.Text,
+            Value = double.Parse(EntryValue.Text),
+            Date = DatePickerDate.Date,
+            Type = RadioExpense.IsChecked ? TransactionType.Expense : TransactionType.Income
+        };
+        _repository.Add(transaction);
+    }
+
+    private bool ValidateInputs()
+    {
+        bool isValid = true;
+        double result;
+        StringBuilder sb = new StringBuilder();
+        if (String.IsNullOrEmpty(EntryName.Text) || string.IsNullOrWhiteSpace(EntryName.Text))
+        {
+            sb.AppendLine("O campo 'Nome' deve ser preenchido!");
+            isValid = false;
+        }
+        if ((String.IsNullOrEmpty(EntryValue.Text) || string.IsNullOrWhiteSpace(EntryValue.Text)))
+        {
+            sb.AppendLine("O campo 'Valor' deve ser preenchido!");
+            isValid = false;
+        }
+        if (!String.IsNullOrEmpty(EntryValue.Text) && !double.TryParse(EntryValue.Text,out result))
+        {
+            sb.AppendLine("O campo 'Valor' deve é invalido!");
+            isValid = false;
+        }
+        if (isValid==false)
+        {
+            LabelError.Text = sb.ToString();
+            LabelError.IsVisible = true;
+        }
+        return isValid;
     }
 }
