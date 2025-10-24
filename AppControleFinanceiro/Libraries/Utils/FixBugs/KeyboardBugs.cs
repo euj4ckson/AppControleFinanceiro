@@ -10,12 +10,14 @@ namespace AppControleFinanceiro.Libraries.Utils.FixBugs
     {
         public static void HideKeyboardOnAndroid()
         {
-#if ANDROID
-            if (Platform.CurrentActivity is not null)
-            {
-                Platform.CurrentActivity.CurrentFocus.ClearFocus();
-            }
-#endif
+        #if ANDROID
+            var activity = Platform.CurrentActivity;
+            var focus = activity?.CurrentFocus;
+
+            if (focus != null)
+                focus.ClearFocus();
+        #endif
         }
+
     }
 }

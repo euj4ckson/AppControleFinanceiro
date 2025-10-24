@@ -38,19 +38,36 @@ public partial class TransactionList : ContentPage
 
     }
 
-    private void OnButtonClicked_to_TransactionAdd(object sender, EventArgs args)
-	{
-        var TransactionAdd = Handler.MauiContext.Services.GetService<TransactionAdd>();
-        Navigation.PushModalAsync(TransactionAdd);
+    private async void OnButtonClicked_to_TransactionAdd(object sender, EventArgs args)
+    {
+        try
+        {
+            var TransactionAdd = Application.Current.Handler.MauiContext.Services.GetService<TransactionAdd>();
+
+            await Navigation.PushModalAsync(TransactionAdd);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", ex.Message, "OK");
+        }
     }
+
     private void TapGestureRecognizer_Tapped_To_TransactionEdit(object sender, TappedEventArgs e)
     {
-        var grid = (Grid)sender;
-        var gestore = (TapGestureRecognizer)grid.GestureRecognizers[0];
-        Transaction transaction = (Transaction)gestore.CommandParameter;
-        var TransactionEdit = Handler.MauiContext.Services.GetService<TransactionEdit>();
-        TransactionEdit.setTransactionData(transaction);
-        Navigation.PushModalAsync(TransactionEdit);
+        try 
+        {
+            var grid = (Grid)sender;
+            var gestore = (TapGestureRecognizer)grid.GestureRecognizers[0];
+            Transaction transaction = (Transaction)gestore.CommandParameter;
+            var TransactionEdit = Handler.MauiContext.Services.GetService<TransactionEdit>();
+            TransactionEdit.setTransactionData(transaction);
+            Navigation.PushModalAsync(TransactionEdit);
+        }
+        catch (Exception ex)
+        {
+            DisplayAlert("Erro", ex.Message, "OK");
+        }
+
         
     }
 
