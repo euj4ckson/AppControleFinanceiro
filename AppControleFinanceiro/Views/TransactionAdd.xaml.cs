@@ -21,20 +21,26 @@ public partial class TransactionAdd : ContentPage
 		Navigation.PopModalAsync();
     }
 
-    private void OnButtonClicked_Save(object sender, EventArgs e)
+    private async void OnButtonClicked_Save(object sender, EventArgs e)
     {
-
-        if (ValidateInputs() == false)
+        try
         {
-            return;
+            if (!ValidateInputs())
+                return;
+
+            SaveTransactionInDatabase();
+            KeyboardBugs.HideKeyboardOnAndroid();
+            WeakReferenceMessenger.Default.Send<string>("RecarregarTransactionList");
+            await Navigation.PopModalAsync();
+
+
         }
-        SaveTransactionInDatabase();
-        KeyboardBugs.HideKeyboardOnAndroid();
-        Navigation.PopModalAsync();
-        KeyboardBugs.HideKeyboardOnAndroid();
-        WeakReferenceMessenger.Default.Send<string>("RecarregarTransactionList");
-        var count = _repository.GetAll().Count();
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", ex.ToString(), "OK");
+        }
     }
+
 
     private void SaveTransactionInDatabase()
     {
@@ -65,7 +71,7 @@ public partial class TransactionAdd : ContentPage
         }
         if (!String.IsNullOrEmpty(EntryValue.Text) && !double.TryParse(EntryValue.Text,out result))
         {
-            sb.AppendLine("O campo 'Valor' deve é invalido!");
+            sb.AppendLine("O campo 'Valor'  é invalido!");
             isValid = false;
         }
         if (isValid==false)

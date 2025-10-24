@@ -8,7 +8,6 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AndroidLinkMode>None</AndroidLinkMode>
 		<ApplicationTitle>AppControleFinanceiro</ApplicationTitle>
 		<ApplicationId>com.companyname.appcontrolefinanceiro</ApplicationId>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

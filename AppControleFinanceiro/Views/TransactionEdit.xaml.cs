@@ -84,7 +84,7 @@ public partial class TransactionEdit : ContentPage
         }
         if (!String.IsNullOrEmpty(EntryValue.Text) && !double.TryParse(EntryValue.Text, out result))
         {
-            sb.AppendLine("O campo 'Valor' deve é invalido!");
+            sb.AppendLine("O campo 'Valor'  é invalido!");
             isValid = false;
         }
         if (isValid == false)

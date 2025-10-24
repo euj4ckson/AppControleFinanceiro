@@ -19,7 +19,7 @@
                 </Image>
             </Grid>
         </Border>
-        <Label TextColor="{AppThemeBinding Light=Red,Dark='F37474'}" x:Name="LabelError" IsVisible="False" Margin="30"/>
+        <Label TextColor="{AppThemeBinding Light=Red,Dark='#F37474'}" x:Name="LabelError" IsVisible="False" Margin="30"/>
 
         <Grid ColumnDefinitions="*,*" Margin="30,0">
             <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Receita"/>
