@@ -1,3 +1,4 @@
+using AppControleFinanceiro.Libraries.Utils.FixBugs;
 using AppControleFinanceiro.Models;
 using AppControleFinanceiro.Repositories;
 using CommunityToolkit.Mvvm.Messaging;
@@ -15,7 +16,7 @@ public partial class TransactionAdd : ContentPage
 		
 	}
 
-    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    private void TapGestureRecognizer_Tapped_ToClose(object sender, TappedEventArgs e)
     {
 		Navigation.PopModalAsync();
     }
@@ -28,13 +29,11 @@ public partial class TransactionAdd : ContentPage
             return;
         }
         SaveTransactionInDatabase();
+        KeyboardBugs.HideKeyboardOnAndroid();
         Navigation.PopModalAsync();
+        KeyboardBugs.HideKeyboardOnAndroid();
         WeakReferenceMessenger.Default.Send<string>("RecarregarTransactionList");
         var count = _repository.GetAll().Count();
-        if (App.Current?.MainPage != null)
-        {
-             App.Current.MainPage.DisplayAlert("Mensagem", $"Existem {count} registros no BD!", "OK");
-        }
     }
 
     private void SaveTransactionInDatabase()
@@ -42,7 +41,7 @@ public partial class TransactionAdd : ContentPage
         Models.Transaction transaction = new Transaction()
         {
             Name = EntryName.Text,
-            Value = double.Parse(EntryValue.Text),
+            Value = Math.Abs(double.Parse(EntryValue.Text)),
             Date = DatePickerDate.Date,
             Type = RadioExpense.IsChecked ? TransactionType.Expense : TransactionType.Income
         };
