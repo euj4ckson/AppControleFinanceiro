@@ -14,18 +14,20 @@
                     Grid.Row="0" Grid.Column="0" TextColor="White"/>
                 <Image WidthRequest="17"  Source="close.png" HorizontalOptions="Center" Grid.Row="0" Grid.Column="1">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_ToClose"/>
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
         </Border>
+        <Label TextColor="{AppThemeBinding Light=Red,Dark='F37474'}" x:Name="LabelError" IsVisible="False" Margin="30"/>
+
         <Grid ColumnDefinitions="*,*" Margin="30,0">
-            <RadioButton IsChecked="True" Content="Receita"/>
-            <RadioButton HorizontalOptions="End"  Content="Despesa" Grid.Column="1"/>
+            <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Receita"/>
+            <RadioButton x:Name="RadioExpense" HorizontalOptions="End"  Content="Despesa" Grid.Column="1"/>
         </Grid>
-        <Entry Placeholder="Nome" Margin="15"/>
-        <DatePicker Margin="15"/>
-        <Entry Placeholder="Valor" Margin="15"/>
-        <Button Text="Salvar" Margin="15" HorizontalOptions="Center"/>
+        <Entry x:Name="EntryName" Placeholder="Nome" Margin="15"/>
+        <DatePicker x:Name="DatePickerDate" Margin="15"/>
+        <Entry x:Name="EntryValue" Placeholder="Valor" Margin="15"/>
+        <Button Clicked="OnButtonClicked_Save" Text="Salvar" Margin="15" HorizontalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>
